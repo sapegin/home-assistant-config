@@ -1,0 +1,122 @@
+# TODO: Turn on moon when we're working in the office
+# TODO: Dogs at home toggle
+# TODO: Dog feeding alarm
+# TODO: Run vacuum cleaner when nobody is home and the container isn't full
+# TODO: Turn off kitchen white light when Apple TV is playing
+# TODO: Notify when window is open when we're not home
+# TODO: Tweak Galaxy in the evening (reading, then slowly fade)
+
+
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+# device_tracker:
+#   - platform: nmap_tracker
+#     # Only scan AT HOME phones every X minutes
+#     home_interval: 1
+#     # Wait X seconds before marking an undetected phone as AWAY
+#     consider_home: 180
+#     hosts:
+#       - 192.168.1.187 # Artem's phone
+#       - 192.168.1.223 # Margarita's phone
+
+
+light:
+  - platform: group
+    unique_id: group_galaxy
+    name: Galaxy
+    entities:
+      - light.candle
+      - light.sausage
+  - platform: group
+    unique_id: group_twix
+    name: Twix
+    entities:
+      - light.hue_bar_left
+      - light.hue_bar_right
+  - platform: group
+    unique_id: group_moon
+    name: Moon
+    entities:
+      - light.moon_1
+      - light.moon_2
+      - light.moon_3
+  - platform: group
+    unique_id: group_sun
+    name: Sun
+    entities:
+      - light.sun_1
+      - light.sun_2
+      - light.sun_3
+      - light.sun_4
+      - light.sun_5
+  - platform: group
+    unique_id: group_ambient_lights
+    name: Ambient lights
+    entities:
+      - light.avocado
+      - light.luxo
+      - light.pizza
+      - light.hue_bar_left
+      - light.hue_bar_right
+  - platform: group
+    unique_id: group_all_lights
+    name: All lights
+    entities:
+      - light.avocado
+      - light.luxo
+      - light.pizza
+      - light.candle
+      - light.sausage
+      - light.hue_bar_left
+      - light.hue_bar_right
+      - light.moon_1
+      - light.moon_2
+      - light.moon_3
+      - light.sun_1
+      - light.sun_2
+      - light.sun_3
+      - light.sun_4
+      - light.sun_5
+  - platform: group
+    unique_id: group_living_room_lights
+    name: Living room lights
+    entities:
+      - light.avocado
+      - light.luxo
+      - light.pizza
+      - light.hue_bar_left
+      - light.hue_bar_right
+      - light.moon_1
+      - light.moon_2
+      - light.moon_3
+      - light.sun_1
+      - light.sun_2
+      - light.sun_3
+      - light.sun_4
+      - light.sun_5
+  - platform: group
+    unique_id: group_bedroom_lights
+    name: Bedroom lights
+    entities:
+      - light.candle
+      - light.sausage
+
+# adaptive_lighting:
+#   max_brightness: 75
+#   min_color_temp: 1000
+#   max_color_temp: 4000
+#   lights:
+#     - light.group_all_lights
+
+
+
+group: !include groups.yaml
+automation: !include_dir_merge_list automations
+script: !include scripts.yaml
+scene: !include scenes.yaml

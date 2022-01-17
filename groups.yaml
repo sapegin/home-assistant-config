@@ -1,0 +1,5 @@
+family:
+  name: Family
+  entities:
+    - person.batman
+    - person.margarita

@@ -1,0 +1,54 @@
+- alias: "Wake up light (workdays)"
+  trigger:
+    - platform: time
+      at: '06:00:00'
+  condition:
+    condition: and
+    conditions:
+     - condition: state
+       entity_id: person.batman
+       state: 'home'   
+     - condition: time
+       weekday:
+         - mon
+         - tue
+         - wed
+         - thu
+         - fri
+  action:
+    - service: "light.turn_on"
+      data:
+        entity_id: light.sausage
+        brightness_pct: 5
+        transition: 1200
+
+- alias: "Wake up light (weekends)"
+  trigger:
+    - platform: time
+      at: '07:20:00'
+  condition:
+    condition: and
+    conditions:
+     - condition: state
+       entity_id: person.batman
+       state: 'home'   
+     - condition: time
+       weekday:
+         - sat
+         - sun
+  action:
+    - service: "light.turn_on"
+      data:
+        entity_id: light.sausage
+        brightness_pct: 5
+        transition: 1200
+
+- alias: "Turn off wake up light"
+  trigger:
+    - platform: time
+      at: '09:00:00'
+  action:
+    - service: "light.turn_off"
+      data:
+        entity_id: light.group_galaxy
+        transition: 180

@@ -1,0 +1,161 @@
+- alias: "Turn on TV lights before sunrise"
+  trigger:
+    - platform: time
+      at: '04:45:00'
+  condition:
+    - condition: state
+      entity_id: group.family
+      state: home
+  action:
+    - service: "light.turn_on"
+      data:
+        entity_id: light.group_twix
+        brightness_pct: 20
+        kelvin: 1000
+        transition: 300
+
+- alias: "Turn on ambient lights when it's dark and cloudy"
+  trigger:
+    platform: numeric_state
+    entity_id: sun.sun
+    value_template: "{{ state.attributes.elevation }}"
+    below: 8.0
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.family
+        state: home
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: weather.home
+          state: sunny
+        - condition: state
+          entity_id: weather.home
+          state: partlycloudy
+  action:
+    - service: "light.turn_on"
+      data:
+        entity_id:
+          - light.avocado
+          - light.luxo
+          - light.group_twix
+        brightness_pct: 40
+        kelvin: 2000
+        transition: 180
+    - service: "light.turn_on"
+      data:
+        entity_id:
+          - light.group_moon
+          - light.group_sun
+        brightness_pct: 30
+        transition: 180
+    - service: "light.turn_on"
+      data:
+        entity_id:
+          - light.pizza
+        brightness_pct: 20
+        transition: 180
+
+- alias: "Turn on ambient lights when it's dark"
+  trigger:
+    platform: numeric_state
+    entity_id: sun.sun
+    value_template: "{{ state.attributes.elevation }}"
+    below: 6.0
+  condition:
+    - condition: state
+      entity_id: group.family
+      state: home
+  action:
+    - service: "light.turn_on"
+      data:
+        entity_id:
+          - light.avocado
+          - light.luxo
+          - light.group_twix
+        brightness_pct: 25
+        kelvin: 1000
+        transition: 180
+    - service: "light.turn_on"
+      data:
+        entity_id:
+          - light.pizza
+        brightness_pct: 10
+        transition: 180
+
+- alias: "Turn off ambient lights when it's light and sunny"
+  trigger:
+    platform: numeric_state
+    entity_id: sun.sun
+    value_template: "{{ state.attributes.elevation }}"
+    above: 6.0
+  condition:
+    condition: or
+    conditions:
+    - condition: state
+      entity_id: weather.home
+      state: sunny
+    - condition: state
+      entity_id: weather.home
+      state: partlycloudy
+  action:
+    service: "light.turn_off"
+    data:
+      entity_id: light.group_ambient_lights
+      transition: 180
+
+- alias: "Turn off ambient lights when it's light"
+  trigger:
+    platform: numeric_state
+    entity_id: sun.sun
+    value_template: "{{ state.attributes.elevation }}"
+    above: 8.0
+  action:
+    service: "light.turn_off"
+    data:
+      entity_id: light.group_ambient_lights
+      transition: 180
+
+- alias: "Turn on dog lights when it's dark"
+  trigger:
+    platform: numeric_state
+    entity_id: sun.sun
+    value_template: "{{ state.attributes.elevation }}"
+    below: 6.0
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.group_galaxy
+      brightness_pct: 20
+      transition: 180
+
+- alias: "Turn on ambient lights when somebody comes after sunset"
+  trigger:
+    platform: state
+    entity_id: group.family
+    from: not_home
+    to: home
+  condition:
+    - condition: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: 6.0
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.group_ambient_lights
+      brightness_pct: 30
+      kelvin: 1000
+      transition: 15
+
+- alias: "Turn off all lights when nobody is at home"
+  trigger:
+    platform: state
+    entity_id: group.family
+    from: home
+    to: not_home
+  action:
+    service: "light.turn_off"
+    entity_id: light.group_all_lights
