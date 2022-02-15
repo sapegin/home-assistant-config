@@ -20,7 +20,7 @@
       data:
         entity_id: light.sausage
         brightness_pct: 5
-        transition: 1200
+        transition: 300
 
 - alias: "Wake up light (weekends)"
   trigger:
@@ -41,7 +41,7 @@
       data:
         entity_id: light.sausage
         brightness_pct: 5
-        transition: 1200
+        transition: 300
 
 - alias: "Turn off wake up light"
   trigger:

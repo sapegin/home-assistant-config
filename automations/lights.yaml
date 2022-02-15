@@ -1,3 +1,4 @@
+
 - alias: "Turn on TV lights before sunrise"
   trigger:
     - platform: time
@@ -47,13 +48,6 @@
     - service: "light.turn_on"
       data:
         entity_id:
-          - light.group_moon
-          - light.group_sun
-        brightness_pct: 30
-        transition: 180
-    - service: "light.turn_on"
-      data:
-        entity_id:
           - light.pizza
         brightness_pct: 20
         transition: 180
@@ -83,6 +77,69 @@
         entity_id:
           - light.pizza
         brightness_pct: 10
+        transition: 180
+
+
+- alias: "Turn on office lights when it's dark and cloudy"
+  trigger:
+    platform: numeric_state
+    entity_id: sun.sun
+    value_template: "{{ state.attributes.elevation }}"
+    below: 8.0
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.family
+        state: home
+      - condition: time
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri        
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: weather.home
+          state: sunny
+        - condition: state
+          entity_id: weather.home
+          state: partlycloudy
+  action:
+    - service: "light.turn_on"
+      data:
+        entity_id:
+          - light.group_sun
+        brightness_pct: 30
+        transition: 180
+
+- alias: "Turn on office lights when it's dark"
+  trigger:
+    platform: numeric_state
+    entity_id: sun.sun
+    value_template: "{{ state.attributes.elevation }}"
+    below: 6.0
+  condition:
+    condition: and
+    conditions:
+     - condition: state
+       entity_id: group.family
+       state: 'home'   
+     - condition: time
+       weekday:
+         - mon
+         - tue
+         - wed
+         - thu
+         - fri
+  action:
+    - service: "light.turn_on"
+      data:
+        entity_id:
+          - light.group_sun
+        brightness_pct: 35
         transition: 180
 
 - alias: "Turn off ambient lights when it's light and sunny"
@@ -129,6 +186,67 @@
     data:
       entity_id: light.group_galaxy
       brightness_pct: 20
+      transition: 180
+
+
+- alias: "Make dog lights brighter for reading"
+  trigger:
+      platform: time
+      at: '21:00:00'
+  condition:
+    - condition: state
+      entity_id: light.sausage
+      state: "on"
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.group_galaxy
+      brightness_pct: 30
+      transition: 180
+
+- alias: "Dim dog lights before night (1)"
+  trigger:
+      platform: time
+      at: '22:00:00'
+  condition:
+    - condition: state
+      entity_id: light.sausage
+      state: "on"
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.group_galaxy
+      brightness_pct: 20
+      transition: 180
+
+- alias: "Dim dog lights before night (2)"
+  trigger:
+      platform: time
+      at: '22:30:00'
+  condition:
+    - condition: state
+      entity_id: light.sausage
+      state: "on"
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.group_galaxy
+      brightness_pct: 15
+      transition: 180
+
+- alias: "Dim dog lights before night (3)"
+  trigger:
+      platform: time
+      at: '23:00:00'
+  condition:
+    - condition: state
+      entity_id: light.sausage
+      state: "on"
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.group_galaxy
+      brightness_pct: 10
       transition: 180
 
 - alias: "Turn on ambient lights when somebody comes after sunset"

@@ -114,6 +114,24 @@ light:
 #   lights:
 #     - light.group_all_lights
 
+homekit:
+  filter:
+    exclude_domains:
+      - automation
+      - binary_sensor
+      - device_tracker
+      - group
+      - input_boolean
+      - light
+      - media_player
+      - persistent_notification
+      - person
+      - script
+      - sensor
+      - sun
+      - switch
+      - zone
+    # include_entities:
 
 
 group: !include groups.yaml
