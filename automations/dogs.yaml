@@ -1,0 +1,56 @@
+# TODO: try to use `delay` in actions
+
+- alias: "Turn on dog dinner alert"
+  id: turn_on_dog_dinner_alert
+  trigger:
+    - platform: time
+      at: '21:00:00'
+  condition:
+    condition: and
+    conditions:
+     - condition: state
+       entity_id: group.family
+       state: 'home'   
+     - condition: state
+       entity_id: input_boolean.dogs_are_here
+       state: "on"
+  action:
+    - service: scene.create
+      data:
+        scene_id: dog_alarm_snapshot
+        snapshot_entities:
+          - light.avocado
+          - light.taquito
+          - light.hue_bar_left
+          - light.hue_bar_right
+    - service: "light.turn_on"
+      data:
+        entity_id:
+          - light.avocado
+          - light.taquito
+          - light.hue_bar_left
+          - light.hue_bar_right
+        brightness_pct: 75
+        rgb_color: [240, 65, 250]
+        transition: 15
+
+- alias: "Turn off dog dinner alert"
+  id: turn_off_dog_dinner_alert
+  trigger:
+    - platform: time
+      at: '21:02:00'
+  condition:
+    condition: and
+    conditions:
+     - condition: state
+       entity_id: group.family
+       state: 'home'   
+     - condition: state
+       entity_id: input_boolean.dogs_are_here
+       state: "on"
+  action:
+    - service: scene.turn_on
+      target:
+        entity_id: scene.dog_alarm_snapshot
+      data:
+        transition: 45

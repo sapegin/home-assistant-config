@@ -1,0 +1,171 @@
+- alias: "Turn on dog lights when it's dark"
+  id: turn_on_dog_light_when_dark
+  trigger:
+    - platform: numeric_state
+      entity_id: input_number.living_room_light_level
+      below: 12000
+      for:
+        minutes: 1
+  condition:
+    - condition: time
+      after: "13:00:00"
+      before: "21:00:00"
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.group_galaxy
+      brightness: 40
+      kelvin: 2000
+      transition: 180
+
+- alias: "Make candle brighter for reading"
+  id: make_candle_brighter_for_reading
+  trigger:
+      platform: time
+      at: '21:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.candle
+        state: "on"
+      - condition: numeric_state
+        entity_id: light.candle
+        attribute: brightness
+        below: 41
+        above: 39
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.candle
+      brightness: 80
+      transition: 180
+
+- alias: "Dim candle before night (1)"
+  id: dim_candle_before_night_1
+  trigger:
+      platform: time
+      at: '22:30:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.candle
+        state: "on"
+      - condition: numeric_state
+        entity_id: light.candle
+        attribute: brightness
+        below: 81
+        above: 79
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.candle
+      brightness: 60
+      transition: 180
+
+- alias: "Dim candle before night (2)"
+  id: dim_candle_before_night_2
+  trigger:
+      platform: time
+      at: '22:45:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.candle
+        state: "on"
+      - condition: numeric_state
+        entity_id: light.candle
+        attribute: brightness
+        below: 61
+        above: 59
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.candle
+      brightness: 40
+      transition: 180
+
+- alias: "Dim candle before night (3)"
+  id: dim_candle_before_night_3
+  trigger:
+      platform: time
+      at: '23:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.candle
+        state: "on"
+      - condition: numeric_state
+        entity_id: light.candle
+        attribute: brightness
+        below: 41
+        above: 39
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.candle
+      brightness: 20
+      transition: 180
+
+- alias: "Dim sausage before night (1)"
+  id: dim_sausage_before_night_1
+  trigger:
+      platform: time
+      at: '22:30:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.sausage
+        state: "on"
+      - condition: numeric_state
+        entity_id: light.sausage
+        attribute: brightness
+        below: 21
+        above: 19
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.sausage
+      brightness: 30
+      transition: 180
+
+- alias: "Dim sausage before night (2)"
+  id: dim_sausage_before_night_2
+  trigger:
+      platform: time
+      at: '23:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.sausage
+        state: "on"
+      - condition: numeric_state
+        entity_id: light.sausage
+        attribute: brightness
+        below: 31
+        above: 29
+  action:
+    service: "light.turn_on"
+    data:
+      entity_id: light.sausage
+      brightness: 20
+      transition: 180
+
+- alias: "Turn off bedroom lights when it's light"
+  id: turn_off_bedroom_light_when_light
+  trigger:
+    - platform: numeric_state
+      entity_id: input_number.living_room_light_level
+      above: 13000
+      for:
+        minutes: 1
+  action:
+    service: "light.turn_off"
+    data:
+      entity_id: light.group_galaxy
+      transition: 180

@@ -1,0 +1,61 @@
+- alias: "Turn on morning lights before sunrise"
+  id: turn_on_morning_light_before_sunrise
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.living_room_motion_sensor_motion
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: time
+      after: "04:00:00"
+      before: "12:00:00"
+    - condition: numeric_state
+      entity_id: input_number.living_room_light_level
+      below: 13500
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.group_twix
+        brightness_pct: 20
+        kelvin: 1000
+        transition: 30
+    - service: light.turn_on
+      data:
+        entity_id: light.group_office_ambient_lights
+        brightness_pct: 50
+        transition: 30
+
+- alias: "Turn off morning lights when it's light"
+  id: turn_off_mornig_light_when_dark
+  mode: single
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - input_number.living_room_light_level
+      above: 14000
+      for:
+        minutes: 5
+  action:
+    - service: "light.turn_off"
+      data:
+        entity_id: light.group_twix
+        transition: 180
+
+
+# - alias: "Turn on TV lights before sunrise"
+#   id: turn_on_tv_light_before_sunrise
+#   trigger:
+#     - platform: time
+#       at: '04:45:00'
+#   condition:
+#     - condition: state
+#       entity_id: group.family
+#       state: home
+#   action:
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.group_twix
+#         brightness_pct: 20
+#         kelvin: 1000
+#         transition: 300

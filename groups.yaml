@@ -1,5 +1,11 @@
 family:
-  name: Family
+  name: "Family"
   entities:
     - person.batman
     - person.margarita
+
+motion_sensors:
+  name: "Motion sensors"
+  entities: 
+    - sensor.living_room_motion_sensor_motion
+    - sensor.bathroom_motion_sensor_motion

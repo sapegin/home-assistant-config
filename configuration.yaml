@@ -1,12 +1,6 @@
-# TODO: Turn on moon when we're working in the office
-# TODO: Dogs at home toggle
-# TODO: Dog feeding alarm
-# TODO: Run vacuum cleaner when nobody is home and the container isn't full
+# TODO: Turn on sun when we're _actually_ working in the office
 # TODO: Turn off kitchen white light when Apple TV is playing
 # TODO: Notify when window is open when we're not home
-# TODO: Tweak Galaxy in the evening (reading, then slowly fade)
-
-
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
@@ -23,8 +17,7 @@ tts:
 #     consider_home: 180
 #     hosts:
 #       - 192.168.1.187 # Artem's phone
-#       - 192.168.1.223 # Margarita's phone
-
+#       - 192.168.1.195 # Margarita's phone
 
 light:
   - platform: group
@@ -33,6 +26,7 @@ light:
     entities:
       - light.candle
       - light.sausage
+      - light.pickle
   - platform: group
     unique_id: group_twix
     name: Twix
@@ -56,14 +50,30 @@ light:
       - light.sun_4
       - light.sun_5
   - platform: group
+    unique_id: group_office_ceiling_lights
+    name: Office ceiling lights
+    entities:
+      - light.sun_1
+      - light.sun_2
+      - light.sun_3
+      - light.sun_4
+      - light.sun_5
+  - platform: group
     unique_id: group_ambient_lights
     name: Ambient lights
     entities:
       - light.avocado
       - light.luxo
       - light.pizza
+      - light.taquito
       - light.hue_bar_left
       - light.hue_bar_right
+  - platform: group
+    unique_id: group_office_ambient_lights
+    name: Office ambient lights
+    entities:
+      - light.avocado
+      - light.luxo
   - platform: group
     unique_id: group_all_lights
     name: All lights
@@ -72,6 +82,7 @@ light:
       - light.luxo
       - light.pizza
       - light.candle
+      - light.pickle
       - light.sausage
       - light.hue_bar_left
       - light.hue_bar_right
@@ -106,33 +117,28 @@ light:
     entities:
       - light.candle
       - light.sausage
+      - light.pickle
 
-# adaptive_lighting:
-#   max_brightness: 75
-#   min_color_temp: 1000
-#   max_color_temp: 4000
-#   lights:
-#     - light.group_all_lights
-
+# The filtering seems to be broken, it still adds million of items to HomeKit
+# I'm not adding Home Assistant to HomeKit anymore
 homekit:
   filter:
-    exclude_domains:
-      - automation
-      - binary_sensor
-      - device_tracker
-      - group
-      - input_boolean
-      - light
-      - media_player
-      - persistent_notification
-      - person
-      - script
-      - sensor
-      - sun
-      - switch
-      - zone
-    # include_entities:
+    include_entities: []
 
+input_boolean:
+  dogs_are_here:
+    name: Dogs are with us now
+    icon: mdi:dog
+  someone_home:
+    name: Someone is home
+    icon: mdi:home-account
+
+input_number:
+  living_room_light_level:
+    name: Living room light level
+    icon: mdi:sun-clock
+    min: 0
+    max: 30000
 
 group: !include groups.yaml
 automation: !include_dir_merge_list automations

@@ -1,0 +1,76 @@
+- alias: "Turn on office lights when it's dark"
+  id: turn_on_office_light_when_dark
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.living_room_motion_sensor_motion
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: time
+      after: "10:00:00"
+      before: "21:00:00"
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: numeric_state
+      entity_id: input_number.living_room_light_level
+      below: 13000
+    - condition: state
+      entity_id: media_player.monsterito
+      state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.group_office_ceiling_lights
+        brightness_pct: 35
+        transition: 30
+
+# - alias: "Turn on office ambient lights when it's dark"
+#   id: turn_on_office_ambient_light_when_dark
+#   mode: single
+#   trigger:
+#     - platform: state
+#       entity_id:
+#         - binary_sensor.living_room_motion_sensor_motion
+#       from: 'off'
+#       to: 'on'
+#   condition:
+#     - condition: time
+#       after: "04:00:00"
+#       before: "12:00:00"
+#       # weekday:
+#       #   - mon
+#       #   - tue
+#       #   - wed
+#       #   - thu
+#       #   - fri
+#     - condition: numeric_state
+#       entity_id: input_number.living_room_light_level
+#       below: 14000
+#   action:
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.group_office_ambient_lights
+#         brightness_pct: 50
+#         transition: 30
+
+- alias: "Turn off office lights when it's light"
+  id: turn_off_office_light_when_dark
+  mode: single
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - input_number.living_room_light_level
+      above: 15000
+      for:
+        minutes: 5
+  action:
+    - service: "light.turn_off"
+      data:
+        entity_id: light.group_office_ceiling_lights
+        transition: 180
