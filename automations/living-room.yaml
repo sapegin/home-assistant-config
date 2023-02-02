@@ -20,8 +20,9 @@
       data:
         entity_id:
           - light.group_twix
+          - light.taquito
         brightness_pct: 25
-        kelvin: 1000
+        rgb_color: [230, 165, 0]
         transition: 180
     - service: light.turn_on
       data:
@@ -89,8 +90,9 @@
       data:
         entity_id:
           - light.group_twix
+          - light.taquito
         brightness_pct: 25
-        kelvin: 1000
+        rgb_color: [230, 165, 0]
         transition: 180
     - service: light.turn_on
       data:
