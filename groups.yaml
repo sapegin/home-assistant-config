@@ -8,4 +8,5 @@ motion_sensors:
   name: "Motion sensors"
   entities: 
     - sensor.living_room_motion_sensor_motion
+    - sensor.office_motion_sensor_motion
     - sensor.bathroom_motion_sensor_motion

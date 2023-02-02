@@ -1,5 +1,5 @@
-- alias: "Turn on morning lights before sunrise"
-  id: turn_on_morning_light_before_sunrise
+- alias: "Turn on ambient lights when somebody is in the room"
+  id: turn_on_ambient_light_when_somebody_moves
   trigger:
     - platform: state
       entity_id:
@@ -7,55 +7,110 @@
       from: 'off'
       to: 'on'
   condition:
-    - condition: time
-      after: "04:00:00"
-      before: "12:00:00"
-    - condition: numeric_state
-      entity_id: input_number.living_room_light_level
-      below: 13500
+    condition: and
+    conditions:
+      - condition: time
+        before: "22:59:59"
+        after: "04:30:00"
+      - condition: numeric_state
+        entity_id: input_number.living_room_light_level
+        below: 10000
   action:
     - service: light.turn_on
       data:
-        entity_id: light.group_twix
-        brightness_pct: 20
+        entity_id:
+          - light.group_twix
+        brightness_pct: 25
         kelvin: 1000
-        transition: 30
+        transition: 180
     - service: light.turn_on
       data:
-        entity_id: light.group_office_ambient_lights
-        brightness_pct: 50
-        transition: 30
+        entity_id:
+          - light.pizza
+        brightness_pct: 10
+        transition: 180
 
-- alias: "Turn off morning lights when it's light"
-  id: turn_off_mornig_light_when_dark
-  mode: single
+- alias: "Turn off ambient lights when it's light"
+  id: turn_off_ambient_light_when_light
   trigger:
     - platform: numeric_state
-      entity_id:
-        - input_number.living_room_light_level
-      above: 14000
+      entity_id: input_number.living_room_light_level
+      above: 11000
       for:
-        minutes: 5
+        minutes: 1
+  action:
+    service: "light.turn_off"
+    data:
+      entity_id: light.group_ambient_lights
+      transition: 180
+
+- alias: Turn off ceiling lights when TV is on
+  id: turn_off_ceiling_lights_when_tv_is_on
+  mode: single
+  trigger:
+  - platform: device
+    device_id: 0ff25cfec71f355cb5f25c0b7a0e61a9
+    domain: media_player
+    entity_id: media_player.monsterito
+    type: turned_on
+    for:
+      seconds: 2
+  condition: []
+  action:
+  - service: light.turn_off
+    data:
+      transition: 15
+    target:
+      entity_id:
+        - light.group_sun
+        - light.group_moon
+
+- alias: "Turn on ambient lights when TV is on"
+  id: turn_on_ambient_lights_when_tv_is_on
+  trigger:
+    platform: device
+    device_id: 0ff25cfec71f355cb5f25c0b7a0e61a9
+    domain: media_player
+    entity_id: media_player.monsterito
+    type: turned_on
+    for:
+      seconds: 2
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        before: "23:00:00"
+        after: "08:00:00"
+      - condition: numeric_state
+        entity_id: input_number.living_room_light_level
+        below: 10000
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.group_twix
+        brightness_pct: 25
+        kelvin: 1000
+        transition: 180
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.pizza
+        brightness_pct: 10
+        transition: 180
+
+- alias: "Turn off all living room lights when nobody is there"
+  id: turn_off_living_room_light_when_empty
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.living_room_motion_sensor_motion
+      to: 'off'
+      for:
+        minutes: 60
   action:
     - service: "light.turn_off"
       data:
-        entity_id: light.group_twix
-        transition: 180
-
-
-# - alias: "Turn on TV lights before sunrise"
-#   id: turn_on_tv_light_before_sunrise
-#   trigger:
-#     - platform: time
-#       at: '04:45:00'
-#   condition:
-#     - condition: state
-#       entity_id: group.family
-#       state: home
-#   action:
-#     - service: light.turn_on
-#       data:
-#         entity_id: light.group_twix
-#         brightness_pct: 20
-#         kelvin: 1000
-#         transition: 300
+        entity_id: light.group_living_room_lights
+        transition: 15

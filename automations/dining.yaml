@@ -3,7 +3,7 @@
   trigger:
     platform: numeric_state
     entity_id: input_number.living_room_light_level
-    below: 12000
+    below: 9000
   condition:
     - condition: state
       entity_id: group.family
@@ -14,7 +14,7 @@
         entity_id:
           - light.taquito
         brightness: 60
-        kelvin: 3000
+        kelvin: 2000
         transition: 180
 
 - alias: "Turn off dining lights when it's light"
@@ -22,7 +22,7 @@
   trigger:
     platform: numeric_state
     entity_id: input_number.living_room_light_level
-    above: 14000
+    above: 10000
   condition:
     condition: and
     conditions:

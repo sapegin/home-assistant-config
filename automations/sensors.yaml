@@ -15,6 +15,23 @@
     data:
       value: "{{ state_attr('sensor.living_room_motion_sensor_illuminance', 'light_level') | int }}"
 
+- alias: "Save the current light level in Office"
+  id: save_current_light_level_office
+  mode: single
+  trigger:
+  - platform: time_pattern
+    seconds: /15
+  action:
+  - service: homeassistant.update_entity
+    data: {}
+    target:
+      entity_id: sensor.office_motion_sensor_illuminance
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.office_light_level
+    data:
+      value: "{{ state_attr('sensor.office_motion_sensor_illuminance', 'light_level') | int }}"
+
 
 - alias: Turn on presense
   id: turn_on_presense
@@ -23,6 +40,11 @@
     - platform: state
       entity_id:
         - binary_sensor.living_room_motion_sensor_motion
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id:
+        - binary_sensor.office_motion_sensor_motion
       from: 'off'
       to: 'on'
     - platform: state
@@ -54,17 +76,18 @@
         minutes: 61
     - platform: state
       entity_id:
-        - binary_sensor.bathroom_motion_sensor_motion
+        - binary_sensor.office_motion_sensor_motion
       from: 'on'
       to: 'off'
       for:
         minutes: 61
     - platform: state
-      entity_id: group.family
-      from: home
-      to: not_home
+      entity_id:
+        - binary_sensor.bathroom_motion_sensor_motion
+      from: 'on'
+      to: 'off'
       for:
-        minutes: 31
+        minutes: 61
   condition:
     condition: and
     conditions:
@@ -76,15 +99,16 @@
           minutes: 60
       - condition: state
         entity_id:
-          - binary_sensor.bathroom_motion_sensor_motion
+          - binary_sensor.office_motion_sensor_motion
         state: 'off'
         for:
           minutes: 60
       - condition: state
-        entity_id: group.family
-        state: not_home
+        entity_id:
+          - binary_sensor.bathroom_motion_sensor_motion
+        state: 'off'
         for:
-          minutes: 30
+          minutes: 60
   action:
     - service: input_boolean.turn_off
       data: {}

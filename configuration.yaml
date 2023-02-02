@@ -53,17 +53,11 @@ light:
     unique_id: group_office_ceiling_lights
     name: Office ceiling lights
     entities:
-      - light.sun_1
-      - light.sun_2
-      - light.sun_3
-      - light.sun_4
-      - light.sun_5
+      - light.sputnik
   - platform: group
     unique_id: group_ambient_lights
     name: Ambient lights
     entities:
-      - light.avocado
-      - light.luxo
       - light.pizza
       - light.taquito
       - light.hue_bar_left
@@ -84,6 +78,8 @@ light:
       - light.candle
       - light.pickle
       - light.sausage
+      - light.sputnik
+      - light.bumblebee
       - light.hue_bar_left
       - light.hue_bar_right
       - light.moon_1
@@ -98,8 +94,6 @@ light:
     unique_id: group_living_room_lights
     name: Living room lights
     entities:
-      - light.avocado
-      - light.luxo
       - light.pizza
       - light.hue_bar_left
       - light.hue_bar_right
@@ -118,6 +112,14 @@ light:
       - light.candle
       - light.sausage
       - light.pickle
+  - platform: group
+    unique_id: group_office_lights
+    name: Office lights
+    entities:
+      - light.avocado
+      - light.luxo
+      - light.sputnik
+      - light.bumblebee
 
 # The filtering seems to be broken, it still adds million of items to HomeKit
 # I'm not adding Home Assistant to HomeKit anymore
@@ -136,6 +138,11 @@ input_boolean:
 input_number:
   living_room_light_level:
     name: Living room light level
+    icon: mdi:sun-clock
+    min: 0
+    max: 30000
+  office_light_level:
+    name: Office light level
     icon: mdi:sun-clock
     min: 0
     max: 30000
