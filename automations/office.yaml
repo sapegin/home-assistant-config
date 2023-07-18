@@ -14,6 +14,9 @@
     - condition: numeric_state
       entity_id: input_number.office_light_level
       below: 10000
+    - condition: state
+      entity_id: light.group_office_ceiling_lights
+      state: "off"
   action:
     - service: light.turn_on
       data:
@@ -38,6 +41,9 @@
     - condition: numeric_state
       entity_id: input_number.office_light_level
       below: 12000
+    - condition: state
+      entity_id: light.group_office_ambient_lights
+      state: "off"
   action:
     - service: light.turn_on
       data:
@@ -99,6 +105,24 @@
         entity_id: light.group_office_ambient_lights
         transition: 180
 
+- alias: "Turn off working office lights when nobody is there"
+  id: turn_off_work_office_light_when_empty
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.office_motion_sensor_motion
+      to: 'off'
+      for:
+        minutes: 15
+  action:
+    - service: "light.turn_off"
+      data:
+        entity_id:
+          - light.group_office_ceiling_lights
+          - light.group_office_ambient_lights
+        transition: 15
+
 - alias: "Turn off all office lights when nobody is there"
   id: turn_off_office_light_when_empty
   mode: single
@@ -108,7 +132,7 @@
         - binary_sensor.office_motion_sensor_motion
       to: 'off'
       for:
-        minutes: 15
+        hours: 3
   action:
     - service: "light.turn_off"
       data:
