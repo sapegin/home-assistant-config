@@ -11,7 +11,7 @@
     conditions:
       - condition: time
         before: "22:59:59"
-        after: "04:30:00"
+        after: "06:00:00"
       - condition: numeric_state
         entity_id: input_number.living_room_light_level
         below: 10000
@@ -46,7 +46,7 @@
         state: "off"
       - condition: time
         before: "22:59:59"
-        after: "04:30:00"
+        after: "06:00:00"
       - condition: numeric_state
         entity_id: input_number.living_room_light_level
         below: 10000
