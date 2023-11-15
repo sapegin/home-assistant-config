@@ -54,6 +54,7 @@ light:
     name: Office ceiling lights
     entities:
       - light.sputnik
+      - light.skillet
   - platform: group
     unique_id: group_ambient_lights
     name: Ambient lights
@@ -79,6 +80,7 @@ light:
       - light.pickle
       - light.sausage
       - light.sputnik
+      - light.skillet
       - light.bumblebee
       - light.hue_bar_left
       - light.hue_bar_right
@@ -119,6 +121,7 @@ light:
       - light.avocado
       - light.luxo
       - light.sputnik
+      - light.skillet
       - light.bumblebee
 
 # The filtering seems to be broken, it still adds million of items to HomeKit

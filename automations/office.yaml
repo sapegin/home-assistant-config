@@ -126,7 +126,6 @@
         kelvin: 1000
         transition: 30
 
-
 - alias: "Turn on Luxo when it's dark"
   id: turn_on_luxo_when_dark
   mode: single
@@ -188,6 +187,36 @@
       data:
         entity_id: light.luxo
         brightness_pct: 80
+        kelvin: 1000
+        transition: 30
+
+- alias: "Turn on Skillet when it's very dark"
+  id: turn_on_skillet_when_very_dark
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.office_motion_sensor_motion
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: time
+      after: "07:30:00"
+      before: "21:30:00"
+    - condition: numeric_state
+      entity_id: input_number.office_light_level
+      below: 10000
+    - condition: numeric_state
+      entity_id: input_number.living_room_light_level
+      below: 7000
+    - condition: state
+      entity_id: light.skillet
+      state: "off"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.skillet
+        brightness_pct: 50
         kelvin: 1000
         transition: 30
 
