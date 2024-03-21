@@ -28,12 +28,6 @@ light:
       - light.sausage
       - light.pickle
   - platform: group
-    unique_id: group_twix
-    name: Twix
-    entities:
-      - light.hue_bar_left
-      - light.hue_bar_right
-  - platform: group
     unique_id: group_moon
     name: Moon
     entities:
@@ -61,8 +55,8 @@ light:
     entities:
       - light.pizza
       - light.taquito
-      - light.hue_bar_left
-      - light.hue_bar_right
+      - light.twix
+      - light.disco
   - platform: group
     unique_id: group_office_ambient_lights
     name: Office ambient lights
@@ -82,8 +76,8 @@ light:
       - light.sputnik
       - light.skillet
       - light.bumblebee
-      - light.hue_bar_left
-      - light.hue_bar_right
+      - light.twix
+      - light.disco
       - light.moon_1
       - light.moon_2
       - light.moon_3
@@ -97,8 +91,8 @@ light:
     name: Living room lights
     entities:
       - light.pizza
-      - light.hue_bar_left
-      - light.hue_bar_right
+      - light.twix
+      - light.disco
       - light.moon_1
       - light.moon_2
       - light.moon_3

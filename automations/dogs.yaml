@@ -21,15 +21,13 @@
         snapshot_entities:
           - light.avocado
           - light.taquito
-          - light.hue_bar_left
-          - light.hue_bar_right
+          - light.twix
     - service: "light.turn_on"
       data:
         entity_id:
           - light.avocado
           - light.taquito
-          - light.hue_bar_left
-          - light.hue_bar_right
+          - light.twix
         brightness_pct: 75
         rgb_color: [240, 65, 250]
         transition: 15

@@ -19,7 +19,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.group_twix
+          - light.twix
         brightness_pct: 25
         rgb_color: [245, 165, 0]
         transition: 180
@@ -28,6 +28,35 @@
         entity_id:
           - light.pizza
         brightness_pct: 10
+        transition: 180
+
+- alias: "Turn on dicso light when somebody is in the room"
+  id: turn_on_disco_light_when_somebody_moves
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.living_room_motion_sensor_motion
+      from: 'off'
+      to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.disco
+        state: "off"
+      - condition: time
+        before: "22:59:59"
+        after: "06:00:00"
+      - condition: numeric_state
+        entity_id: input_number.living_room_light_level
+        below: 8000
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.disco
+        brightness_pct: 25
+        rgb_color: [245, 165, 0]
         transition: 180
 
 - alias: "Turn on dining light when somebody is in the room"
@@ -64,7 +93,7 @@
   trigger:
     - platform: numeric_state
       entity_id: input_number.living_room_light_level
-      above: 11000
+      above: 10100
       for:
         minutes: 1
   action:
@@ -117,7 +146,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.group_twix
+          - light.twix
           - light.taquito
         brightness_pct: 25
         rgb_color: [245, 165, 0]
