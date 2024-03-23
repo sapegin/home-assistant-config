@@ -55,7 +55,7 @@
       data:
         entity_id:
           - light.disco
-        brightness_pct: 25
+        brightness_pct: 40
         rgb_color: [245, 165, 0]
         transition: 180
 
