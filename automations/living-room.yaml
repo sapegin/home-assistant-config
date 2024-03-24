@@ -21,7 +21,7 @@
         entity_id:
           - light.twix
         brightness_pct: 25
-        rgb_color: [245, 165, 0]
+        rgb_color: [245, 135, 0]
         transition: 180
     - service: light.turn_on
       data:
@@ -56,7 +56,7 @@
         entity_id:
           - light.disco
         brightness_pct: 40
-        rgb_color: [245, 165, 0]
+        rgb_color: [245, 135, 0]
         transition: 180
 
 - alias: "Turn on dining light when somebody is in the room"
@@ -149,7 +149,7 @@
           - light.twix
           - light.taquito
         brightness_pct: 25
-        rgb_color: [245, 165, 0]
+        rgb_color: [245, 135, 0]
         transition: 180
     - service: light.turn_on
       data:
