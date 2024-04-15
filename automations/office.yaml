@@ -13,7 +13,7 @@
       before: "21:30:00"
     - condition: numeric_state
       entity_id: input_number.office_light_level
-      below: 10000
+      below: 14000
     - condition: state
       entity_id: light.sputnik
       state: "off"
@@ -40,7 +40,7 @@
       before: "21:30:00"
     - condition: numeric_state
       entity_id: input_number.office_light_level
-      below: 10000
+      below: 14000
     - condition: numeric_state
       entity_id: input_number.living_room_light_level
       below: 5000
@@ -77,7 +77,7 @@
       before: "21:30:00"
     - condition: numeric_state
       entity_id: input_number.office_light_level
-      below: 12000
+      below: 15000
     - condition: state
       entity_id: light.avocado
       state: "off"
@@ -104,7 +104,7 @@
       before: "21:30:00"
     - condition: numeric_state
       entity_id: input_number.office_light_level
-      below: 10000
+      below: 14000
     - condition: numeric_state
       entity_id: input_number.living_room_light_level
       below: 7000
@@ -141,7 +141,7 @@
       before: "21:30:00"
     - condition: numeric_state
       entity_id: input_number.office_light_level
-      below: 12000
+      below: 15000
     - condition: state
       entity_id: light.luxo
       state: "off"
@@ -168,7 +168,7 @@
       before: "21:30:00"
     - condition: numeric_state
       entity_id: input_number.office_light_level
-      below: 10000
+      below: 14000
     - condition: numeric_state
       entity_id: input_number.living_room_light_level
       below: 7000
@@ -205,10 +205,7 @@
       before: "21:30:00"
     - condition: numeric_state
       entity_id: input_number.office_light_level
-      below: 10000
-    - condition: numeric_state
-      entity_id: input_number.living_room_light_level
-      below: 7000
+      below: 12000
     - condition: state
       entity_id: light.skillet
       state: "off"
@@ -237,7 +234,7 @@
     - service: light.turn_on
       data:
         entity_id: light.avocado
-        brightness_pct: 15
+        brightness_pct: 20
         kelvin: 1000
         transition: 15
 
@@ -248,7 +245,7 @@
     - platform: numeric_state
       entity_id:
         - input_number.office_light_level
-      above: 11000
+      above: 14500
       for:
         minutes: 5
   action:
@@ -264,7 +261,7 @@
     - platform: numeric_state
       entity_id:
         - input_number.office_light_level
-      above: 13000
+      above: 15500
       for:
         minutes: 15
   action:
