@@ -1,0 +1,66 @@
+# Squirrelsong Light Theme for Home Assistant
+# https://sapegin.me/squirrelsong/
+
+SquirrelsongLight:
+  # Squirrelsong Light colors
+  white: "#fdfdfe"
+  gray0f: "#f7f6f9"
+  gray0d: "#dbd7e0"
+  gray0e: "#e8e5eb"
+  gray0c: "#c9c4cf"
+  gray09: "#9c96a2"
+  gray08: "#8c8792"
+  gray07: "#78737d"
+  gray06: "#6b676f"
+  gray04: "#4c4b4e"
+  blueContrast: "#527b98"
+  blue: "#80a4be"
+  redContrast: "#c06159"
+  red: "#d67e76"
+  orangeContrast: "#bf8240"
+  greenContrast: "#667e44"
+  green: "#9bae7e"
+
+  # UI colors
+  primary-color: var(--blueContrast)
+  light-primary-color: var(--blue)
+  primary-background-color: var(--white)
+  secondary-background-color: var(--gray0f)
+  code-editor-background-color: var(--gray0f)
+  accent-color: var(--gray04)
+  error-color: var(--redContrast)
+  warning-color: var(--orangeContrast)
+  success-color: var(--greenContrast)
+  info-color: var(--blueContrast)
+  state-on-color: var(--green)
+  state-off-color: var(--red)
+
+  # Text
+  primary-text-color: var(--gray04)
+  secondary-text-color: var(--gray07)
+  text-primary-color: var(--white)
+  divider-color: var(--gray0e)
+  disabled-text-color: var(--gray09)
+
+  # Cards
+  card-background-color: var(--white)
+  ha-card-background: var(--white)
+  ha-card-border-color: var(--gray0e)
+  ha-card-border-radius: "12px"
+
+  # Header
+  app-header-background-color: var(--gray0f)
+  app-header-text-color: var(--gray04)
+  app-header-selection-bar-color: var(--gray06)
+  app-header-edit-background-color: var(--gray04)
+  app-header-edit-text-color: var(--white)
+  app-header-border-bottom: "1px solid var(--gray0e)"
+
+  # Sidebar
+  sidebar-background-color: var(--gray0f)
+  sidebar-selected-background-color: var(--gray0d)
+  sidebar-icon-color: var(--gray07)
+  sidebar-text-color: var(--gray06)
+  sidebar-selected-icon-color: var(--gray04)
+  sidebar-selected-text-color: var(--gray04)
+  sidebar-menu-button-text-color: var(--gray04)

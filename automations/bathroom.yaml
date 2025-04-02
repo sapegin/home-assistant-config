@@ -1,0 +1,185 @@
+# Bathroom light: turn on to 100%, disabling the turn off automation
+- alias: "Turn on bathroom lights to 100% on switch Hue button press"
+  id: bathroom_light_switch_hue_on
+  mode: single
+  trigger:
+    - trigger: device
+      domain: hue
+      type: initial_press
+      subtype: 4 # Hue button
+      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
+      unique_id: ce29a8a2-0d37-4e6e-8843-b12d50afdd6e
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        brightness_pct: 100
+        transition: 2
+
+- alias: "Turn on bathroom lights on switch press"
+  id: bathroom_light_switch_on
+  mode: single
+  trigger:
+    - trigger: device
+      domain: hue
+      type: initial_press
+      subtype: 1 # On/off button
+      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
+      unique_id: 1c537d22-e264-4b9b-b85c-1f09d0fddc0d
+  condition:
+    - condition: state
+      entity_id: light.hippo_1
+      state: "off"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        brightness_pct: 95
+        transition: 2
+        
+- alias: "Turn off bathroom lights on switch press"
+  id: bathroom_light_switch_off
+  mode: single
+  trigger:
+    - trigger: device
+      domain: hue
+      type: initial_press
+      subtype: 1 # On/off button
+      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
+      unique_id: 1c537d22-e264-4b9b-b85c-1f09d0fddc0d
+  condition:
+    - condition: state
+      entity_id: light.hippo_1
+      state: "on"
+  action:
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        transition: 2
+
+- alias: "Brighten bathroom lights on switch button press"
+  id: bathroom_light_switch_brighten
+  mode: single
+  trigger:
+    - trigger: device
+      domain: hue
+      type: initial_press
+      subtype: 2 # Brightness up button
+      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
+      unique_id: ce29a8a2-0d37-4e6e-8843-b12d50afdd6e
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        brightness_step_pct: 5
+        transition: 1
+
+- alias: "Dim bathroom lights on switch button press"
+  id: bathroom_light_switch_dim
+  mode: single
+  trigger:
+    - trigger: device
+      domain: hue
+      type: initial_press
+      subtype: 3 # Brightness down button
+      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
+      unique_id: ce29a8a2-0d37-4e6e-8843-b12d50afdd6e
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        brightness_step_pct: -5
+        transition: 1
+
+# Bathroom light: turn on when it's off
+
+- alias: "Turn on bathroom light (day)"
+  id: turn_on_bathroom_light
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.bathroom_motion_sensor_motion
+      from: "off"
+      to: "on"
+  condition:
+    - condition: time
+      after: "08:00:00"
+      before: "23:00:00"
+    - condition: numeric_state
+      entity_id: input_number.bathroom_light_level
+      below: 80 # lx
+    - condition: state
+      entity_id: light.hippo_1
+      state: "off"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        brightness_pct: 95
+        transition: 5
+
+- alias: "Turn on bathroom light (night)"
+  id: turn_on_bathroom_light
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.bathroom_motion_sensor_motion
+      from: "off"
+      to: "on"
+  condition:
+    - condition: time
+      after: "23:00:00"
+      before: "08:00:00"
+    - condition: numeric_state
+      entity_id: input_number.bathroom_light_level
+      below: 80 # lx
+    - condition: state
+      entity_id: light.hippo_1
+      state: "off"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        brightness_pct: 15
+        transition: 5
+
+# Bathroom light: turn off only when the level matches the level set by automation
+
+- alias: "Turn off bathroom light"
+  id: turn_off_bathroom_light
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.bathroom_motion_sensor_motion
+      to: "off"
+      for:
+        minutes: 10
+  condition:
+    - condition: numeric_state
+      entity_id: light.hippo_1
+      attribute: brightness
+      below: 245 # 96%*255/100
+  action:
+    - service: "light.turn_off"
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        transition: 15

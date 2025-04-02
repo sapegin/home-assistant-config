@@ -1,5 +1,5 @@
-- alias: "Turn on ambient lights when somebody is in the room"
-  id: turn_on_ambient_light_when_somebody_moves
+- alias: "Turn on living room ambient lights when somebody is in the room"
+  id: turn_on_living_room_ambient_light_when_somebody_moves
   trigger:
     - platform: state
       entity_id:
@@ -10,153 +10,38 @@
     condition: and
     conditions:
       - condition: time
-        before: "22:59:59"
         after: "06:00:00"
+        before: "23:00:00"
       - condition: numeric_state
         entity_id: input_number.living_room_light_level
-        below: 10000
+        below: 40 # lx
   action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.twix
-        brightness_pct: 25
-        rgb_color: [245, 145, 0]
-        transition: 180
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.pizza
-        brightness_pct: 10
-        transition: 180
+    - parallel:
+      - service: light.turn_on
+        data:
+          entity_id: light.sparkly_snake
+          brightness_pct: 25
+          rgb_color: [255, 130, 0]
+          transition: 30
+      - service: light.turn_on
+        data:
+          entity_id: light.ember
+          brightness_pct: 10
+          transition: 30
 
-- alias: "Turn on dicso light when somebody is in the room"
-  id: turn_on_disco_light_when_somebody_moves
-  trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.living_room_motion_sensor_motion
-      from: 'off'
-      to: 'on'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: light.disco
-        state: "off"
-      - condition: time
-        before: "22:59:59"
-        after: "06:00:00"
-      - condition: numeric_state
-        entity_id: input_number.living_room_light_level
-        below: 8000
-  action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.disco
-        brightness_pct: 40
-        rgb_color: [245, 145, 0]
-        transition: 180
-
-- alias: "Turn on dining light when somebody is in the room"
-  id: turn_on_dining_light_when_somebody_moves
-  trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.living_room_motion_sensor_motion
-      from: 'off'
-      to: 'on'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: light.taquito
-        state: "off"
-      - condition: time
-        before: "22:59:59"
-        after: "06:00:00"
-      - condition: numeric_state
-        entity_id: input_number.living_room_light_level
-        below: 10000
-  action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.taquito
-        brightness_pct: 25
-        rgb_color: [255, 165, 0]
-        transition: 180
-
-- alias: "Turn off ambient lights when it's light"
-  id: turn_off_ambient_light_when_light
+- alias: "Turn off living room ambient lights when it's light"
+  id: turn_off_living_room_ambient_light_when_light
   trigger:
     - platform: numeric_state
       entity_id: input_number.living_room_light_level
-      above: 10100
+      above: 80
       for:
-        minutes: 1
+        minutes: 15
   action:
     service: "light.turn_off"
     data:
-      entity_id: light.group_ambient_lights
-      transition: 180
-
-- alias: Turn off ceiling lights when TV is on
-  id: turn_off_ceiling_lights_when_tv_is_on
-  mode: single
-  trigger:
-  - platform: device
-    device_id: 0ff25cfec71f355cb5f25c0b7a0e61a9
-    domain: media_player
-    entity_id: media_player.monsterito
-    type: turned_on
-    for:
-      seconds: 2
-  condition: []
-  action:
-  - service: light.turn_off
-    data:
-      transition: 15
-    target:
-      entity_id:
-        - light.group_sun
-        - light.group_moon
-
-- alias: "Turn on ambient lights when TV is on"
-  id: turn_on_ambient_lights_when_tv_is_on
-  trigger:
-    platform: device
-    device_id: 0ff25cfec71f355cb5f25c0b7a0e61a9
-    domain: media_player
-    entity_id: media_player.monsterito
-    type: turned_on
-    for:
-      seconds: 2
-  condition:
-    condition: and
-    conditions:
-      - condition: time
-        before: "23:00:00"
-        after: "08:00:00"
-      - condition: numeric_state
-        entity_id: input_number.living_room_light_level
-        below: 10000
-  action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.twix
-          - light.taquito
-        brightness_pct: 25
-        rgb_color: [245, 145, 0]
-        transition: 180
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.pizza
-        brightness_pct: 10
-        transition: 180
+      entity_id: light.living_room_ambient_lights
+      transition: 30
 
 - alias: "Turn off all living room lights when nobody is there"
   id: turn_off_living_room_light_when_empty
@@ -171,5 +56,5 @@
   action:
     - service: "light.turn_off"
       data:
-        entity_id: light.group_living_room_lights
+        entity_id: light.living_room_lights
         transition: 15

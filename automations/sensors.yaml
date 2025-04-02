@@ -1,9 +1,11 @@
+# Save current light levels into `input_number.*_light_level` variables in lumens (lx)
+
 - alias: "Save the current light level in Living room"
   id: save_current_light_level_living_room
   mode: single
   trigger:
   - platform: time_pattern
-    seconds: /15
+    seconds: /5
   action:
   - service: homeassistant.update_entity
     data: {}
@@ -13,28 +15,63 @@
     target:
       entity_id: input_number.living_room_light_level
     data:
-      value: "{{ state_attr('sensor.living_room_motion_sensor_illuminance', 'light_level') | int }}"
+      value: "{{ states('sensor.living_room_motion_sensor_illuminance') | int }}"
+
+- alias: "Save the current light level in Kitchen"
+  id: save_current_light_level_kitchen
+  mode: single
+  trigger:
+  - platform: time_pattern
+    seconds: /5
+  action:
+  - service: homeassistant.update_entity
+    data: {}
+    target:
+      entity_id: sensor.kitchen_motion_sensor_illuminance
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.kitchen_light_level
+    data:
+      value: "{{ states('sensor.kitchen_motion_sensor_illuminance') | int }}"
+
+- alias: "Save the current light level in Bathroom"
+  id: save_current_light_level_bathroom
+  mode: single
+  trigger:
+  - platform: time_pattern
+    seconds: /5
+  action:
+  - service: homeassistant.update_entity
+    data: {}
+    target:
+      entity_id: sensor.bathroom_motion_sensor_illuminance
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.bathroom_light_level
+    data:
+      value: "{{ states('sensor.bathroom_motion_sensor_illuminance') | int }}"
 
 - alias: "Save the current light level in Office"
   id: save_current_light_level_office
   mode: single
   trigger:
   - platform: time_pattern
-    seconds: /15
+    seconds: /5
   action:
   - service: homeassistant.update_entity
     data: {}
     target:
-      entity_id: sensor.office_motion_sensor_illuminance
+      entity_id: sensor.smart_presence_sensor_illuminance
   - service: input_number.set_value
     target:
       entity_id: input_number.office_light_level
     data:
-      value: "{{ state_attr('sensor.office_motion_sensor_illuminance', 'light_level') | int }}"
+      value: "{{ states('sensor.smart_presence_sensor_illuminance') | int }}"
 
+# Update `input_boolean.someone_home` flag value based on motion/presence sensors
 
-- alias: Turn on presense
-  id: turn_on_presense
+- alias: Turn on presence
+  id: turn_on_presence
   mode: single
   trigger:
     - platform: state
@@ -44,7 +81,7 @@
       to: 'on'
     - platform: state
       entity_id:
-        - binary_sensor.office_motion_sensor_motion
+        - binary_sensor.kitchen_motion_sensor_motion
       from: 'off'
       to: 'on'
     - platform: state
@@ -53,9 +90,12 @@
       from: 'off'
       to: 'on'
     - platform: state
-      entity_id: group.family
-      from: not_home
-      to: home
+      entity_id:
+        # This is the Meross presence sensor in the office, it breaks after renaming,
+        # so we have to use the default name
+        - binary_sensor.smart_presence_sensor_occupancy
+      from: 'off'
+      to: 'on'
   condition: []
   action:
     - service: input_boolean.turn_on
@@ -63,8 +103,8 @@
       target:
         entity_id: input_boolean.someone_home
 
-- alias: Turn off presense
-  id: turn_off_presense
+- alias: Turn off presence
+  id: turn_off_presence
   mode: single
   trigger:
     - platform: state
@@ -76,7 +116,7 @@
         minutes: 61
     - platform: state
       entity_id:
-        - binary_sensor.office_motion_sensor_motion
+        - binary_sensor.smart_presence_sensor_occupancy
       from: 'on'
       to: 'off'
       for:
@@ -99,7 +139,7 @@
           minutes: 60
       - condition: state
         entity_id:
-          - binary_sensor.office_motion_sensor_motion
+          - binary_sensor.smart_presence_sensor_occupancy
         state: 'off'
         for:
           minutes: 60
