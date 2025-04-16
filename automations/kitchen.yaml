@@ -24,6 +24,8 @@
         entity_id:
           - light.coco_1
           - light.coco_2
+          - light.coco_3
+          - light.coco_4
         brightness_pct: 100
         transition: 2
         
@@ -48,6 +50,8 @@
         entity_id:
           - light.coco_1
           - light.coco_2
+          - light.coco_3
+          - light.coco_4
         transition: 2
 
 - alias: "Brighten kitchen lights on switch button press"
@@ -66,6 +70,8 @@
         entity_id:
           - light.coco_1
           - light.coco_2
+          - light.coco_3
+          - light.coco_4
         brightness_step_pct: 5
         transition: 1
 
@@ -85,6 +91,8 @@
         entity_id:
           - light.coco_1
           - light.coco_2
+          - light.coco_3
+          - light.coco_4
         brightness_step_pct: -5
         transition: 1
 
@@ -94,11 +102,16 @@
   mode: single
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.kitchen_motion_sensor_motion
+      entity_id: binary_sensor.kitchen_motion_sensor_motion
       from: "off"
       to: "on"
+    - platform: numeric_state
+      entity_id: input_number.kitchen_light_level
+      below: 45 # lx
   condition:
+    - condition: state
+      entity_id: binary_sensor.kitchen_motion_sensor_motion
+      state: "on"
     - condition: numeric_state
       entity_id: input_number.kitchen_light_level
       below: 45 # lx
@@ -108,7 +121,9 @@
   action:
     - service: light.turn_on
       data:
-        entity_id: light.coco_1
+        entity_id:
+          - light.coco_1
+          - light.coco_4
         brightness_pct: 20
         transition: 15
 
@@ -122,7 +137,7 @@
         - binary_sensor.kitchen_motion_sensor_motion
       to: "off"
       for:
-        minutes: 1
+        minutes: 5
   condition:
     - condition: state
       entity_id: light.coco_2
@@ -130,7 +145,9 @@
   action:
     - service: "light.turn_off"
       data:
-        entity_id: light.coco_1
+        entity_id:
+          - light.coco_1
+          - light.coco_4
         transition: 15
 
 - alias: "Turn off kitchen island lights when Apple TV starts playing"
@@ -172,4 +189,29 @@
         entity_id:
           - light.coco_1
           - light.coco_2
+          - light.coco_3
+          - light.coco_4
         transition: 60
+
+- alias: "Turn off all kitchen lights when nobody is there"
+  id: turn_off_kitchen_lights_nobody
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.kitchen_motion_sensor_motion
+      to: "off"
+      for:
+        minutes: 60
+  action:
+    - service: "light.turn_off"
+      data:
+        entity_id:
+          - light.cocodrilo_1
+          - light.cocodrilo_2
+          - light.cocodrilo_3
+          - light.coco_1
+          - light.coco_2
+          - light.coco_3
+          - light.coco_4
+        transition: 15

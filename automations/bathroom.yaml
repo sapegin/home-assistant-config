@@ -104,7 +104,7 @@
 # Bathroom light: turn on when it's off
 
 - alias: "Turn on bathroom light (day)"
-  id: turn_on_bathroom_light
+  id: turn_on_bathroom_light_day
   mode: single
   trigger:
     - platform: state
@@ -114,8 +114,8 @@
       to: "on"
   condition:
     - condition: time
-      after: "08:00:00"
-      before: "23:00:00"
+      after: "07:00:00"
+      before: "17:00:00"
     - condition: numeric_state
       entity_id: input_number.bathroom_light_level
       below: 80 # lx
@@ -131,8 +131,11 @@
         brightness_pct: 95
         transition: 5
 
-- alias: "Turn on bathroom light (night)"
-  id: turn_on_bathroom_light
+# Don’t check light level in the evening to avoid blackouts during shower, when
+# the light level doesn’t get updated for some time, and hand-waving doesn’t
+# work
+- alias: "Turn on bathroom light (evening)"
+  id: turn_on_bathroom_light_evening
   mode: single
   trigger:
     - platform: state
@@ -142,8 +145,33 @@
       to: "on"
   condition:
     - condition: time
-      after: "23:00:00"
-      before: "08:00:00"
+      after: "17:00:00"
+      before: "00:00:00"
+    - condition: state
+      entity_id: light.hippo_1
+      state: "off"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        brightness_pct: 80
+        transition: 5
+
+- alias: "Turn on bathroom light (night)"
+  id: turn_on_bathroom_light_night
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.bathroom_motion_sensor_motion
+      from: "off"
+      to: "on"
+  condition:
+    - condition: time
+      after: "00:00:00"
+      before: "07:00:00"
     - condition: numeric_state
       entity_id: input_number.bathroom_light_level
       below: 80 # lx

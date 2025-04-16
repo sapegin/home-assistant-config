@@ -6,54 +6,20 @@
       entity_id: binary_sensor.smart_presence_sensor_occupancy
       from: "off"
       to: "on"
-  condition:
-    - condition: time
-      after: "07:30:00"
-      before: "21:59:59"
-    - condition: numeric_state
-      entity_id: input_number.office_light_level
-      below: 100
-  action:
-    - parallel:
-      - service: light.turn_on
-        data:
-          entity_id: light.mushrump
-          brightness_pct: 75
-          rgb_color: [255, 197, 98]
-          transition: 30
-      - service: light.turn_on
-        data:
-          entity_id: light.sputnik
-          brightness_pct: 60
-          rgb_color: [255, 136, 29]
-          transition: 30
-      - service: light.turn_on
-        data:
-          entity_id:
-            - light.twix_1
-            - light.twix_2
-          brightness_pct: 75
-          rgb_color: [255, 155, 35]
-          transition: 30
-
-- alias: "Turn on office ambient lights when it's dark"
-  id: turn_on_office_ambience_when_dark
-  mode: single
-  trigger:
     - platform: numeric_state
       entity_id:
         - input_number.office_light_level
       below: 100
   condition:
-    - condition: time
-      after: "07:30:01"
-      before: "21:30:00"
     - condition: state
       entity_id: binary_sensor.smart_presence_sensor_occupancy
       state: "on"
-    - condition: state
-      entity_id: light.mushrump
-      state: "off"
+    - condition: numeric_state
+      entity_id: input_number.office_light_level
+      below: 100
+    - condition: time
+      after: "07:30:00"
+      before: "21:59:59"
   action:
     - parallel:
       - service: light.turn_on

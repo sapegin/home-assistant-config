@@ -15,6 +15,7 @@ light:
     unique_id: group_living_room_lights
     name: Living room lights
     entities:
+      - light.moon
       - light.ember
       - light.sparkly_snake
   # Office ambient lights
