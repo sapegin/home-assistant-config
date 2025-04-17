@@ -1,3 +1,5 @@
+# Kitchen cooking light switch
+
 - alias: "Turn on kitchen lights on switch press"
   id: kitchen_light_switch_on
   mode: single
@@ -26,7 +28,7 @@
           - light.coco_2
           - light.coco_3
           - light.coco_4
-        brightness_pct: 100
+        brightness_pct: 95
         transition: 2
         
 - alias: "Turn off kitchen lights on switch press"
@@ -36,7 +38,7 @@
     - trigger: device
       domain: hue
       type: initial_press
-      subtype: 1
+      subtype: 1 # On/off button
       device_id: 7c738080ffe740335dd27886fc39ba22
       unique_id: 60d3e8fa-6170-4acc-9d7b-cafb4eebea43
   condition:
@@ -95,6 +97,26 @@
           - light.coco_4
         brightness_step_pct: -5
         transition: 1
+
+# Turn on to 100%, disabling the turn off automation
+- alias: "Turn on kitchen lights to 100% on switch Hue button press"
+  id: kitchen_light_switch_hue_on
+  mode: single
+  trigger:
+    - trigger: device
+      domain: hue
+      type: initial_press
+      subtype: 4 # Hue button
+      device_id: 7c738080ffe740335dd27886fc39ba22
+      unique_id: 60d3e8fa-6170-4acc-9d7b-cafb4eebea43
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hippo_1
+          - light.hippo_2
+        brightness_pct: 100
+        transition: 2
 
 # Kitchen pilot light: turn on only when the group is off
 - alias: "Turn on kitchen pilot light"
@@ -178,11 +200,18 @@
     entity_id: media_player.apple_tv
     type: playing
   condition:
-    # Only when it's not pilot light
-    - condition: numeric_state
-      entity_id: light.coco_1
-      attribute: brightness
-      above: 240 # About 95%
+    condition: and
+    conditions:
+      # Only when it's not a pilot light
+      - condition: numeric_state
+        entity_id: light.coco_1
+        attribute: brightness
+        above: 76 # 30%*255/100
+      # And the light is not locked
+      - condition: numeric_state
+        entity_id: light.coco_1
+        attribute: brightness
+        below: 245 # 96%*255/100
   action:
     - service: "light.turn_off"
       data:

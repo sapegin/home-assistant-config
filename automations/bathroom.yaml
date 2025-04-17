@@ -1,4 +1,6 @@
-# Bathroom light: turn on to 100%, disabling the turn off automation
+# Bathroom light switch
+
+# Turn on to 100%, disabling the turn off automation
 - alias: "Turn on bathroom lights to 100% on switch Hue button press"
   id: bathroom_light_switch_hue_on
   mode: single
