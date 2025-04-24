@@ -24,10 +24,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.coco_1
-          - light.coco_2
-          - light.coco_3
-          - light.coco_4
+          - light.coco
         brightness_pct: 95
         transition: 2
         
@@ -50,15 +47,13 @@
     - service: light.turn_off
       data:
         entity_id:
-          - light.coco_1
-          - light.coco_2
-          - light.coco_3
-          - light.coco_4
+          - light.coco
         transition: 2
 
 - alias: "Brighten kitchen lights on switch button press"
   id: kitchen_light_switch_brighten
-  mode: single
+  mode: parallel
+  max: 5
   trigger:
     - trigger: device
       domain: hue
@@ -70,16 +65,14 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.coco_1
-          - light.coco_2
-          - light.coco_3
-          - light.coco_4
+          - light.coco
         brightness_step_pct: 5
         transition: 1
 
 - alias: "Dim kitchen lights on switch button press"
   id: kitchen_light_switch_dim
-  mode: single
+  mode: parallel
+  max: 5
   trigger:
     - trigger: device
       domain: hue
@@ -91,10 +84,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.coco_1
-          - light.coco_2
-          - light.coco_3
-          - light.coco_4
+          - light.coco
         brightness_step_pct: -5
         transition: 1
 
@@ -113,8 +103,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.coco
         brightness_pct: 100
         transition: 2
 
@@ -129,14 +118,14 @@
       to: "on"
     - platform: numeric_state
       entity_id: input_number.kitchen_light_level
-      below: 45 # lx
+      below: 60 # lx
   condition:
     - condition: state
       entity_id: binary_sensor.kitchen_motion_sensor_motion
       state: "on"
     - condition: numeric_state
       entity_id: input_number.kitchen_light_level
-      below: 45 # lx
+      below: 60 # lx
     - condition: state
       entity_id: light.coco_1
       state: "off"
@@ -146,6 +135,7 @@
         entity_id:
           - light.coco_1
           - light.coco_4
+          - light.coco_5
         brightness_pct: 20
         transition: 15
 
@@ -160,6 +150,9 @@
       to: "off"
       for:
         minutes: 5
+    - platform: numeric_state
+      entity_id: input_number.kitchen_light_level
+      below: 100 # lx
   condition:
     - condition: state
       entity_id: light.coco_2
@@ -170,6 +163,7 @@
         entity_id:
           - light.coco_1
           - light.coco_4
+          - light.coco_5
         transition: 15
 
 - alias: "Turn off kitchen island lights when Apple TV starts playing"
@@ -184,10 +178,8 @@
   action:
     - service: "light.turn_off"
       data:
-        entity_id:
-          - light.cocodrilo_1
-          - light.cocodrilo_2
-          - light.cocodrilo_3
+        entity_id: 
+          - light.cocodrilo
         transition: 60
 
 - alias: "Turn off kitchen cooking lights when Apple TV starts playing"
@@ -216,10 +208,7 @@
     - service: "light.turn_off"
       data:
         entity_id:
-          - light.coco_1
-          - light.coco_2
-          - light.coco_3
-          - light.coco_4
+          - light.coco
         transition: 60
 
 - alias: "Turn off all kitchen lights when nobody is there"
@@ -236,11 +225,6 @@
     - service: "light.turn_off"
       data:
         entity_id:
-          - light.cocodrilo_1
-          - light.cocodrilo_2
-          - light.cocodrilo_3
-          - light.coco_1
-          - light.coco_2
-          - light.coco_3
-          - light.coco_4
+          - light.cocodrilo
+          - light.coco
         transition: 15

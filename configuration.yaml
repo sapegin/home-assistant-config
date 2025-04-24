@@ -10,6 +10,12 @@ light:
     entities:
       - light.ember
       - light.sparkly_snake
+  - platform: group
+    unique_id: group_kitchen_ambient_lights
+    name: Kitchen ambient lights
+    entities:
+      - light.stream 
+      - light.cactus
   # All living room lights
   - platform: group
     unique_id: group_living_room_lights

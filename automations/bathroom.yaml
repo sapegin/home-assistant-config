@@ -15,8 +15,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         brightness_pct: 100
         transition: 2
 
@@ -38,8 +37,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         brightness_pct: 95
         transition: 2
         
@@ -61,13 +59,13 @@
     - service: light.turn_off
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         transition: 2
 
 - alias: "Brighten bathroom lights on switch button press"
   id: bathroom_light_switch_brighten
-  mode: single
+  mode: parallel
+  max: 5
   trigger:
     - trigger: device
       domain: hue
@@ -79,14 +77,14 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         brightness_step_pct: 5
         transition: 1
 
 - alias: "Dim bathroom lights on switch button press"
   id: bathroom_light_switch_dim
-  mode: single
+  mode: parallel
+  max: 5
   trigger:
     - trigger: device
       domain: hue
@@ -98,8 +96,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         brightness_step_pct: -5
         transition: 1
 
@@ -128,8 +125,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         brightness_pct: 95
         transition: 5
 
@@ -156,8 +152,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         brightness_pct: 80
         transition: 5
 
@@ -184,8 +179,7 @@
     - service: light.turn_on
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         brightness_pct: 15
         transition: 5
 
@@ -210,6 +204,5 @@
     - service: "light.turn_off"
       data:
         entity_id:
-          - light.hippo_1
-          - light.hippo_2
+          - light.hippo
         transition: 15

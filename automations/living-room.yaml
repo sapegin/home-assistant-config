@@ -14,7 +14,7 @@
         before: "01:00:00"
       - condition: numeric_state
         entity_id: input_number.living_room_light_level
-        below: 40 # lx
+        below: 50 # lx
   action:
     - parallel:
       - service: light.turn_on
@@ -28,6 +28,16 @@
           entity_id: light.ember
           brightness_pct: 15
           transition: 30
+      # Include kitchen lights for convenience
+      - service: light.turn_on
+        data:
+          entity_id: light.stream
+          brightness_pct: 30
+          rgb_color: [255, 164, 35]
+          transition: 30
+      - service: light.turn_on
+        data:
+          entity_id: light.cactus
 
 - alias: "Turn on living room night lights when somebody is in the room"
   id: turn_on_living_room_night_light_when_somebody_moves
@@ -45,7 +55,7 @@
         before: "06:00:00"
       - condition: numeric_state
         entity_id: input_number.living_room_light_level
-        below: 40 # lx
+        below: 50 # lx
   action:
     - parallel:
       - service: light.turn_on
@@ -65,7 +75,9 @@
   action:
     service: "light.turn_off"
     data:
-      entity_id: light.living_room_ambient_lights
+      entity_id:
+        - light.living_room_ambient_lights
+        - light.kitchen_ambient_lights
       transition: 30
 
 - alias: "Turn off all living room lights when nobody is there"
