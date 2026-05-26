@@ -3,13 +3,17 @@ default_config:
 
 # Light groups to control multiple lights together
 light:
-  # Living room ambient lights
+  # light.kitchen_lights
   - platform: group
-    unique_id: group_living_room_ambient_lights
-    name: Living room ambient lights
+    unique_id: group_kitchen_lights
+    name: All kitchen lights
     entities:
-      - light.ember
-      - light.sparkly_snake
+      - light.coco
+      - light.cocodrilo
+      - light.stream
+      - light.cactus
+  # Kitchen ambient lights
+  # light.kitchen_ambient_lights
   - platform: group
     unique_id: group_kitchen_ambient_lights
     name: Kitchen ambient lights
@@ -17,11 +21,20 @@ light:
       - light.stream 
       - light.cactus
   # All living room lights
+  # light.living_room_lights
   - platform: group
     unique_id: group_living_room_lights
     name: Living room lights
     entities:
       - light.moon
+      - light.ember
+      - light.sparkly_snake
+  # Living room ambient lights
+  # light.living_room_ambient_lights
+  - platform: group
+    unique_id: group_living_room_ambient_lights
+    name: Living room ambient lights
+    entities:
       - light.ember
       - light.sparkly_snake
   # Office ambient lights
@@ -31,6 +44,8 @@ light:
     entities:
       - light.mushrump
       - light.sputnik
+      - light.avocado
+      - light.luxo
       - light.twix_1
       - light.twix_2
   # All office lights
@@ -40,6 +55,8 @@ light:
     entities:
       - light.mushrump
       - light.sputnik
+      - light.avocado
+      - light.luxo
       - light.twix_1
       - light.twix_2
   # Bedroom ambient lights
