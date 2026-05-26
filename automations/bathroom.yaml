@@ -5,12 +5,10 @@
   id: bathroom_light_switch_hue_on
   mode: single
   trigger:
-    - trigger: device
-      domain: hue
-      type: initial_press
-      subtype: 4 # Hue button
-      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
-      unique_id: ce29a8a2-0d37-4e6e-8843-b12d50afdd6e
+    - trigger: state
+      entity_id: event.bathroom_switch_button_4 # Hue button
+      attribute: event_type
+      to: initial_press
   action:
     - service: light.turn_on
       data:
@@ -23,12 +21,10 @@
   id: bathroom_light_switch_on
   mode: single
   trigger:
-    - trigger: device
-      domain: hue
-      type: initial_press
-      subtype: 1 # On/off button
-      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
-      unique_id: 1c537d22-e264-4b9b-b85c-1f09d0fddc0d
+    - trigger: state
+      entity_id: event.bathroom_switch_button_1 # On/off button
+      attribute: event_type
+      to: initial_press
   condition:
     - condition: state
       entity_id: light.hippo_1
@@ -45,12 +41,10 @@
   id: bathroom_light_switch_off
   mode: single
   trigger:
-    - trigger: device
-      domain: hue
-      type: initial_press
-      subtype: 1 # On/off button
-      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
-      unique_id: 1c537d22-e264-4b9b-b85c-1f09d0fddc0d
+    - trigger: state
+      entity_id: event.bathroom_switch_button_1 # On/off button
+      attribute: event_type
+      to: initial_press
   condition:
     - condition: state
       entity_id: light.hippo_1
@@ -67,12 +61,10 @@
   mode: parallel
   max: 5
   trigger:
-    - trigger: device
-      domain: hue
-      type: initial_press
-      subtype: 2 # Brightness up button
-      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
-      unique_id: ce29a8a2-0d37-4e6e-8843-b12d50afdd6e
+    - trigger: state
+      entity_id: event.bathroom_switch_button_2 # Brightness up button
+      attribute: event_type
+      to: initial_press
   action:
     - service: light.turn_on
       data:
@@ -86,12 +78,10 @@
   mode: parallel
   max: 5
   trigger:
-    - trigger: device
-      domain: hue
-      type: initial_press
-      subtype: 3 # Brightness down button
-      device_id: 0af8cf0cce6983cc96e0d27bed8dc9dc
-      unique_id: ce29a8a2-0d37-4e6e-8843-b12d50afdd6e
+    - trigger: state
+      entity_id: event.bathroom_switch_button_3 # Brightness down button 
+      attribute: event_type
+      to: initial_press
   action:
     - service: light.turn_on
       data:
@@ -107,8 +97,7 @@
   mode: single
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.bathroom_motion_sensor_motion
+      entity_id: binary_sensor.bathroom_motion_sensor_motion
       from: "off"
       to: "on"
   condition:
@@ -137,8 +126,7 @@
   mode: single
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.bathroom_motion_sensor_motion
+      entity_id: binary_sensor.bathroom_motion_sensor_motion
       from: "off"
       to: "on"
   condition:
@@ -161,8 +149,7 @@
   mode: single
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.bathroom_motion_sensor_motion
+      entity_id: binary_sensor.bathroom_motion_sensor_motion
       from: "off"
       to: "on"
   condition:
@@ -190,8 +177,7 @@
   mode: single
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.bathroom_motion_sensor_motion
+      entity_id: binary_sensor.bathroom_motion_sensor_motion
       to: "off"
       for:
         minutes: 10
