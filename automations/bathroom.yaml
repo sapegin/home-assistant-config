@@ -58,37 +58,41 @@
 
 - alias: "Brighten bathroom lights on switch button press"
   id: bathroom_light_switch_brighten
-  mode: parallel
-  max: 5
+  mode: queued
+  max: 10
   trigger:
     - trigger: state
       entity_id: event.bathroom_switch_button_2 # Brightness up button
       attribute: event_type
-      to: initial_press
+      to:
+        - initial_press
+        - repeat
   action:
     - service: light.turn_on
       data:
         entity_id:
           - light.hippo
-        brightness_step_pct: 5
-        transition: 1
+        brightness_step_pct: 10
+        transition: 0
 
 - alias: "Dim bathroom lights on switch button press"
   id: bathroom_light_switch_dim
-  mode: parallel
-  max: 5
+  mode: queued
+  max: 10
   trigger:
     - trigger: state
       entity_id: event.bathroom_switch_button_3 # Brightness down button 
       attribute: event_type
-      to: initial_press
+      to:
+        - initial_press
+        - repeat
   action:
     - service: light.turn_on
       data:
         entity_id:
           - light.hippo
-        brightness_step_pct: -5
-        transition: 1
+        brightness_step_pct: -10
+        transition: 0
 
 # Bathroom light: turn on when it's off
 
