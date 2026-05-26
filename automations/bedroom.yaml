@@ -2,7 +2,7 @@
   id: turn_on_bedroom_ambient_light_when_dark
   trigger:
     - platform: numeric_state
-      entity_id: input_number.living_room_light_level
+      entity_id: input_number.kitchen_light_level
       below: 40
       for:
         minutes: 1
@@ -16,18 +16,4 @@
       entity_id: light.bedroom_ambient_lights
       brightness: 40
       kelvin: 2000
-      transition: 60
-
-- alias: "Turn off bedroom ambient lights when it's light"
-  id: turn_off_bedroom_ambient_light_when_light
-  trigger:
-    - platform: numeric_state
-      entity_id: input_number.living_room_light_level
-      above: 55
-      for:
-        minutes: 15
-  action:
-    service: "light.turn_off"
-    data:
-      entity_id: light.bedroom_ambient_lights
       transition: 60
