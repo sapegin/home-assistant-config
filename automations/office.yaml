@@ -30,9 +30,16 @@
           transition: 30
       - service: light.turn_on
         data:
-          entity_id: light.sputnik
+          entity_id:
+            - light.sputnik
+            - light.avocado
           brightness_pct: 60
           rgb_color: [255, 136, 29]
+          transition: 30
+      - service: light.turn_on
+        data:
+          entity_id: light.luxo
+          brightness_pct: 30
           transition: 30
       - service: light.turn_on
         data:
