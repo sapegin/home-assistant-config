@@ -4,17 +4,17 @@
     - platform: state
       entity_id:
         - binary_sensor.living_room_motion_sensor_motion
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   condition:
     condition: and
     conditions:
       - condition: time
         after: "06:00:00"
-        before: "01:00:00"
+        before: "01:30:00"
       - condition: numeric_state
         entity_id: input_number.living_room_light_level
-        below: 50 # lx
+        below: 30 # lx
   action:
     - parallel:
       - service: light.turn_on
@@ -45,17 +45,17 @@
     - platform: state
       entity_id:
         - binary_sensor.living_room_motion_sensor_motion
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   condition:
     condition: and
     conditions:
       - condition: time
-        after: "01:00:00"
+        after: "01:30:00"
         before: "06:00:00"
       - condition: numeric_state
         entity_id: input_number.living_room_light_level
-        below: 50 # lx
+        below: 30 # lx
   action:
     - parallel:
       - service: light.turn_on
@@ -69,29 +69,26 @@
   trigger:
     - platform: numeric_state
       entity_id: input_number.living_room_light_level
-      above: 80
+      above: 35
       for:
         minutes: 15
   action:
-    service: "light.turn_off"
-    data:
-      entity_id:
-        - light.living_room_ambient_lights
-        - light.kitchen_ambient_lights
-      transition: 30
+    - service: light.turn_off
+      data:
+        entity_id: light.living_room_ambient_lights
+        transition: 30
 
 - alias: "Turn off all living room lights when nobody is there"
   id: turn_off_living_room_light_when_empty
   mode: single
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.living_room_motion_sensor_motion
-      to: 'off'
+      entity_id: binary_sensor.living_room_motion_sensor_motion
+      to: "off"
       for:
         minutes: 60
   action:
-    - service: "light.turn_off"
+    - service: light.turn_off
       data:
         entity_id: light.living_room_lights
         transition: 15
@@ -101,17 +98,16 @@
   mode: single
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.living_room_motion_sensor_motion
-      to: 'off'
+      entity_id: binary_sensor.living_room_motion_sensor_motion
+      to: "off"
       for:
         minutes: 5
   condition:
     - condition: time
-      after: "01:00:00"
+      after: "01:30:00"
       before: "06:00:00"
   action:
-    - service: "light.turn_off"
+    - service: light.turn_off
       data:
         entity_id: light.living_room_lights
         transition: 15
